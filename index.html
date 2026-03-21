@@ -16,7 +16,6 @@
     <meta name="twitter:title" content="Relentiv | IT Services & Digital Solutions" />
     <meta name="twitter:description" content="Professional service company delivering results." />
     <meta name="twitter:image" content="https://relentiv.com/og-image.jpg" />
-    <meta name="google-site-verification" content="%VITE_GOOGLE_SITE_VERIFICATION%" />
     <link rel="canonical" href="https://relentiv.com/" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -29,7 +28,7 @@
     <script>
       (function () {
         const gaId = '%VITE_GA4_ID%';
-        if (!gaId || gaId === 'G-XXXXXXXXXX') return;
+        if (!gaId || gaId === '%VITE_GA4_ID%' || gaId === 'G-XXXXXXXXXX') return;
         if (window.localStorage.getItem('relentiv-cookie-consent') !== 'accepted') return;
         window.dataLayer = window.dataLayer || [];
         window.gtag = function () {
