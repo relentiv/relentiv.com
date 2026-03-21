@@ -2,12 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="description" content="Relentiv is a results-driven service company delivering web, mobile, AI, and product engineering solutions for growing businesses." />
+    <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <meta name="theme-color" content="#052219" />
+    <meta property="og:title" content="Relentiv | IT Services & Digital Solutions" />
+    <meta property="og:description" content="Professional service company delivering reliable digital execution." />
+    <meta property="og:url" content="https://relentiv.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://relentiv.com/og-image.jpg" />
+    <meta property="og:site_name" content="Relentiv" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Relentiv | IT Services & Digital Solutions" />
+    <meta name="twitter:description" content="Professional service company delivering results." />
+    <meta name="twitter:image" content="https://relentiv.com/og-image.jpg" />
+    <meta name="google-site-verification" content="%VITE_GOOGLE_SITE_VERIFICATION%" />
+    <link rel="canonical" href="https://relentiv.com/" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" />
+    <title>Relentiv | IT Services & Digital Solutions</title>
+    <script>
+      (function () {
+        const gaId = '%VITE_GA4_ID%';
+        if (!gaId || gaId === 'G-XXXXXXXXXX') return;
+        if (window.localStorage.getItem('relentiv-cookie-consent') !== 'accepted') return;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag('js', new Date());
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        document.head.appendChild(script);
+      })();
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="min-h-screen bg-[#050505] font-sans text-white">
+        <section class="relative flex min-h-screen items-center px-6 pt-32 pb-24 text-center">
+          <div class="mx-auto max-w-4xl">
+            <p class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-sm">
+              Next-Gen Digital Transformation
+            </p>
+            <h1 class="mb-8 text-5xl font-extrabold leading-[1.1] text-white lg:text-7xl">
+              Engineering the Future of Tech.
+            </h1>
+            <p class="mx-auto mb-10 max-w-2xl text-lg font-medium leading-relaxed text-gray-200 lg:text-xl">
+              Relentiv delivers web, mobile, AI, and product engineering services for businesses that need reliable digital execution.
+            </p>
+            <ul class="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-400">
+              <li>Web Development</li>
+              <li>Mobile Solutions</li>
+              <li>Game Engineering</li>
+              <li>Legacy Modernization</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

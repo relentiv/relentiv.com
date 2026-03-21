@@ -1,76 +1,107 @@
-export const blogPosts = [
+export interface BlogPost {
+  slug: string;
+  type: string;
+  tag?: string;
+  title: string;
+  stat?: string;
+  description: string;
+  metaDescription: string;
+  themeColor: 'orange' | 'emerald' | 'indigo' | 'rose' | 'zinc';
+  author: string;
+  publishedAt: string;
+  updatedAt: string;
+  image: string;
+  videoUrl?: string;
+  content: string;
+}
+
+export const blogPosts: BlogPost[] = [
   {
-    id: "fintech-transformation",
-    type: "Transformation",
-    tag: "FinTech",
-    title: "Increase in user retention",
-    stat: "300%",
-    description: "Redesigned the core banking flow for a leading European fintech, resulting in unprecedented engagement.",
-    gradient: "from-orange-600/40",
-    glow: "bg-orange-500/30",
-    themeColor: "orange",
+    slug: 'fintech-transformation',
+    type: 'Transformation',
+    tag: 'FinTech',
+    title: 'Increase in user retention',
+    stat: '300%',
+    description:
+      'Redesigned the core banking flow for a leading European fintech, resulting in stronger engagement and clearer transaction completion.',
+    metaDescription:
+      'A fintech redesign engagement that improved retention, reduced transaction drop-off, and clarified complex banking flows.',
+    themeColor: 'orange',
+    author: 'Relentiv Editorial Team',
+    publishedAt: '2026-02-12',
+    updatedAt: '2026-03-08',
+    image: '/og-image.jpg',
+    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
     content: `
-      <p>The financial technology sector is evolving at an unprecedented pace. For our recent client, a leading European fintech company, the challenge was clear: their core banking flow was causing significant user drop-off. We needed to rethink the entire experience from the ground up.</p>
-      
-      <h3>The Challenge</h3>
-      <p>Users were abandoning the app during critical transaction flows. The interface was cluttered, the steps were confusing, and the overall experience lacked the premium feel expected from a modern banking application.</p>
+      <p>The financial technology sector is evolving at a rapid pace. For a leading European fintech client, the challenge was clear: the core banking flow caused substantial user drop-off during critical transactions.</p>
 
-      <h3>Our Approach</h3>
-      <p>We started by conducting extensive user research to understand the pain points. Our team then designed a streamlined, intuitive interface that guided users effortlessly through complex financial operations. We implemented a design system that prioritized clarity, speed, and trust.</p>
+      <h2>The Challenge</h2>
+      <p>Users were abandoning the app during high-value flows. The interface was cluttered, the steps were confusing, and the experience lacked the confidence expected from a modern banking platform.</p>
 
-      <h3>The Results</h3>
-      <p>The impact was immediate and profound. Within three months of launching the redesigned app, user retention skyrocketed by 300%. Transaction completion rates improved significantly, and customer support tickets related to usability issues dropped to near zero.</p>
+      <h2>Our Approach</h2>
+      <p>We started with user research to identify the precise friction points. The team then designed a clearer interface that guided users through complex financial operations and paired that work with a design system built for trust, speed, and consistency.</p>
+
+      <h2>The Results</h2>
+      <p>Within three months of launch, user retention rose by 300%. Transaction completion improved, and support tickets tied to usability issues dropped sharply.</p>
     `,
-    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" // Placeholder video
   },
   {
-    id: "ai-agents-enterprise",
-    type: "Tech Update",
-    tag: "",
-    title: "Introducing AI Agents for Enterprise",
-    stat: "",
-    description: "How to integrate autonomous workflows into your existing stack.",
-    gradient: "from-emerald-900/40",
-    glow: "bg-emerald-500/20",
-    themeColor: "emerald",
+    slug: 'ai-agents-enterprise',
+    type: 'Tech Update',
+    title: 'Introducing AI Agents for Enterprise',
+    description:
+      'How to integrate autonomous workflows into an existing technical stack without replacing the systems teams already depend on.',
+    metaDescription:
+      'A practical overview of how enterprise teams can integrate AI agents into existing workflows through APIs and automation.',
+    themeColor: 'emerald',
+    author: 'Relentiv Strategy Team',
+    publishedAt: '2026-01-24',
+    updatedAt: '2026-03-04',
+    image: '/og-image.jpg',
     content: `
-      <p>Artificial Intelligence is no longer just a buzzword; it's a fundamental driver of enterprise efficiency. Today, we are thrilled to introduce our new framework for integrating AI Agents into complex enterprise environments.</p>
-      
-      <h3>What are AI Agents?</h3>
-      <p>Unlike traditional software that follows rigid rules, AI Agents can understand context, make decisions, and execute tasks autonomously. They act as intelligent assistants that can handle everything from data analysis to customer support.</p>
+      <p>Artificial intelligence is becoming part of everyday enterprise operations. The real challenge is not whether teams should use AI agents, but how they can introduce them without disrupting the stack they already trust.</p>
 
-      <h3>Integration Strategy</h3>
-      <p>Integrating these agents doesn't mean ripping and replacing your existing stack. Our approach focuses on seamless integration via APIs, allowing agents to work alongside your current tools and processes.</p>
+      <h2>What AI Agents Actually Do</h2>
+      <p>Unlike rule-based systems, AI agents can interpret context, make bounded decisions, and execute tasks across connected systems. That makes them useful for support workflows, operations, reporting, and internal knowledge tasks.</p>
 
-      <h3>Real-World Applications</h3>
+      <h2>Integration Strategy</h2>
+      <p>Effective deployment does not require a full rebuild. Our preferred approach connects agents through existing APIs so they can operate alongside current tooling, permissions, and approval flows.</p>
+
+      <h2>Common Use Cases</h2>
       <ul>
-        <li><strong>Automated Customer Support:</strong> Agents that can resolve complex queries without human intervention.</li>
-        <li><strong>Data Insights:</strong> Agents that continuously monitor data streams and alert teams to anomalies or opportunities.</li>
-        <li><strong>Workflow Automation:</strong> Agents that orchestrate multi-step processes across different departments.</li>
+        <li><strong>Automated support workflows:</strong> triage, summarization, and first-response handling.</li>
+        <li><strong>Data monitoring:</strong> continuous analysis of signals, anomalies, and opportunity detection.</li>
+        <li><strong>Workflow orchestration:</strong> multi-step coordination across operations, sales, and delivery systems.</li>
       </ul>
-    `
+    `,
   },
   {
-    id: "nexus-logistics-story",
-    type: "Client Story",
-    tag: "",
-    title: "Relentiv completely re-engineered our approach to digital product design.",
-    stat: "",
-    description: "Sarah Jenkins, CTO, Nexus Logistics",
-    gradient: "from-indigo-900/40",
-    glow: "bg-indigo-500/20",
-    themeColor: "indigo",
+    slug: 'nexus-logistics-story',
+    type: 'Client Story',
+    title: 'Relentiv completely re-engineered our approach to digital product design.',
+    description: 'How an embedded product and engineering partnership helped Nexus Logistics modernize delivery and internal workflows.',
+    metaDescription:
+      'A client story covering product modernization, embedded team delivery, and a logistics platform redesign for Nexus Logistics.',
+    themeColor: 'indigo',
+    author: 'Relentiv Client Success Team',
+    publishedAt: '2025-12-18',
+    updatedAt: '2026-02-27',
+    image: '/og-image.jpg',
     content: `
-      <p>Nexus Logistics was facing a critical juncture. Their legacy systems were slowing them down, and their digital products were falling behind the competition. They needed a partner who could not only modernize their technology but also transform their approach to product design.</p>
-      
-      <h3>The Partnership</h3>
-      <p>We embedded our team within Nexus Logistics, working closely with their engineers and product managers. We introduced agile methodologies, established a robust design system, and fostered a culture of continuous innovation.</p>
+      <p>Nexus Logistics reached a point where aging systems were slowing delivery and weakening the usability of its digital products. The company needed a partner that could modernize the stack and improve product execution at the same time.</p>
 
-      <h3>The Transformation</h3>
-      <p>"Relentiv didn't just build us a new app; they changed how we think about software," says Sarah Jenkins, CTO of Nexus Logistics. "Their expertise in both engineering and design helped us deliver a product that our users actually love."</p>
+      <h2>The Partnership</h2>
+      <p>Our team embedded with Nexus Logistics across engineering and product. We introduced a stronger delivery rhythm, created a reusable design system, and aligned technical decisions with operational goals.</p>
 
-      <h3>Looking Ahead</h3>
-      <p>Today, Nexus Logistics is setting the standard for digital experiences in the logistics industry. Their new platform is faster, more reliable, and significantly easier to use, driving increased efficiency and customer satisfaction.</p>
-    `
-  }
+      <h2>The Transformation</h2>
+      <p>"Relentiv didn't just build us a new app; they changed how we think about software," said Sarah Jenkins, CTO of Nexus Logistics. The new system improved reliability, made the platform easier to use, and gave internal teams a stronger foundation for future releases.</p>
+
+      <h2>Looking Ahead</h2>
+      <p>Today, Nexus Logistics is operating on a faster and more maintainable platform that supports better customer outcomes and internal efficiency.</p>
+    `,
+  },
 ];
+
+export function getBlogPostBySlug(slug: string) {
+  return blogPosts.find((post) => post.slug === slug);
+}
