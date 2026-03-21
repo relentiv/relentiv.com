@@ -25,22 +25,6 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" />
     <title>Relentiv | IT Services & Digital Solutions</title>
-    <script>
-      (function () {
-        const gaId = '%VITE_GA4_ID%';
-        if (!gaId || gaId === '%VITE_GA4_ID%' || gaId === 'G-XXXXXXXXXX') return;
-        if (window.localStorage.getItem('relentiv-cookie-consent') !== 'accepted') return;
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function () {
-          window.dataLayer.push(arguments);
-        };
-        window.gtag('js', new Date());
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
-        document.head.appendChild(script);
-      })();
-    </script>
   </head>
   <body>
     <div id="root">
