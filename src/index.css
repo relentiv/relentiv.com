@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-white-smoke: #F5F5F5;
+  --color-forest-green: #0B3D2E;
+  --color-deep-forest: #052219;
+  --color-accent-green: #10B981;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Merriweather", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+body {
+  background-color: var(--color-white-smoke);
+  color: var(--color-deep-forest);
+}
+
+.nav-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* For YouTube background video */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.video-background iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* 100 * 9 / 16 */
+  min-height: 100vh;
+  min-width: 177.77vh; /* 100 * 16 / 9 */
+  /* Scale up to hide YouTube UI elements at the top and bottom */
+  transform: translate(-50%, -50%) scale(1.35);
+  pointer-events: none;
+}
