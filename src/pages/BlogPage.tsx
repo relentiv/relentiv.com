@@ -1,16 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {useLocation} from 'wouter';
-import {ArrowLeft, BookOpen, Moon} from 'lucide-react';
-import Seo from '../components/Seo';
-import {blogPosts, getBlogPostBySlug} from '../data/blogPosts';
-import {buildBreadcrumbSchema, estimateReadingTime, formatDisplayDate} from '../lib/site';
-import NotFoundPage from './NotFoundPage';
+import React, { useState, useEffect } from "react";
+import { useRoute, useLocation } from "wouter";
+import { ArrowLeft, BookOpen, Moon } from "lucide-react";
+import { blogPosts } from "../data/blogPosts";
+import PageSeo from "../components/PageSeo";
 
-interface BlogPageProps {
-  slug: string;
-}
-
-export default function BlogPage({slug}: BlogPageProps) {
+export default function BlogPage() {
+  const [match, params] = useRoute<{ id: string }>("/blog/:id");
   const [, setLocation] = useLocation();
   const [readingMode, setReadingMode] = useState(false);
 
@@ -20,13 +15,28 @@ export default function BlogPage({slug}: BlogPageProps) {
 
   const post = getBlogPostBySlug(slug);
 
-  const relatedPosts = useMemo(
-    () => blogPosts.filter((candidate) => candidate.slug !== slug).slice(0, 2),
-    [slug],
-  );
+  const post = blogPosts.find((p) => p.id === params.id);
+  const pagePath = `/blog/${params.id}`;
 
   if (!post) {
-    return <NotFoundPage />;
+    return (
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
+        <PageSeo
+          title="Post Not Found"
+          description="The requested Relentiv article could not be found."
+          path={pagePath}
+        />
+        <div className="text-center">
+          <h1 className="text-2xl mb-4">Post not found</h1>
+          <button
+            onClick={() => setLocation("/")}
+            className="text-gray-400 hover:text-white flex items-center gap-2 mx-auto"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Home
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const getGradient = () => {
@@ -74,58 +84,39 @@ export default function BlogPage({slug}: BlogPageProps) {
     }
   };
 
-  const readingTime = estimateReadingTime(post.content);
-
-  const blogPostingSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    author: {
-      '@type': 'Person',
-      name: post.author,
-    },
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
-    image: `https://relentiv.com${post.image}`,
-    description: post.metaDescription,
-    url: `https://relentiv.com/blog/${post.slug}`,
-  };
-
-  const breadcrumbs = buildBreadcrumbSchema([
-    {name: 'Home', path: '/'},
-    {name: 'Blog', path: '/blog'},
-    {name: post.title, path: `/blog/${post.slug}`},
-  ]);
+  const pageDescription =
+    post.description ||
+    post.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 155);
 
   return (
-    <>
-      <Seo
-        title={`${post.title} | Relentiv`}
-        description={post.metaDescription}
-        path={`/blog/${post.slug}`}
+    <div
+      className={`min-h-screen transition-colors duration-500 ${readingMode ? "bg-[#fdf6e3] text-[#433f38]" : "bg-[#050505] text-gray-300"}`}
+    >
+      <PageSeo
+        title={post.title}
+        description={pageDescription}
+        path={pagePath}
         type="article"
-        article={{publishedTime: post.publishedAt, modifiedTime: post.updatedAt}}
-        schemas={[blogPostingSchema, breadcrumbs]}
       />
-      <div
-        className={`min-h-screen transition-colors duration-500 ${
-          readingMode ? 'bg-[#fdf6e3] text-[#433f38]' : 'bg-[#050505] text-gray-300'
-        }`}
-      >
-        <header className="relative w-full overflow-hidden border-b border-white/5 pt-32 pb-20">
-          {!readingMode && (
-            <>
-              <div className={`absolute inset-0 bg-gradient-to-b ${getGradient()} opacity-80`}></div>
-              <div className={`absolute top-0 left-1/2 h-[400px] w-[800px] -translate-x-1/2 rounded-full ${getGlow()} blur-[120px] pointer-events-none`}></div>
-              <div
-                className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-                style={{
-                  backgroundImage:
-                    'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
-                }}
-              ></div>
-            </>
-          )}
+      {/* Header Section with Rough Gradient */}
+      <header className="relative w-full pt-32 pb-20 overflow-hidden border-b border-white/5">
+        {!readingMode && (
+          <>
+            <div
+              className={`absolute inset-0 bg-gradient-to-b ${getGradient()} opacity-80`}
+            ></div>
+            <div
+              className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] ${getGlow()} rounded-full blur-[120px] pointer-events-none`}
+            ></div>
+            {/* Noise */}
+            <div
+              className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              }}
+            ></div>
+          </>
+        )}
 
           <div className="relative z-10 mx-auto max-w-3xl px-6">
             <button

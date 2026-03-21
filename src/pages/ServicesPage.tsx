@@ -1,10 +1,9 @@
-import React, {useEffect, useRef} from 'react';
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {ArrowRight, CheckCircle2} from 'lucide-react';
-import Seo from '../components/Seo';
-import {services} from '../data/services';
-import {buildBreadcrumbSchema} from '../lib/site';
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import PageSeo from "../components/PageSeo";
+import { isPrerender } from "../utils/prerender";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +12,10 @@ export default function ServicesPage({onBook}: {onBook: () => void}) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (isPrerender) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.fromTo('.hero-anim', {y: 40, opacity: 0}, {y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power3.out'});
 
@@ -38,28 +41,21 @@ export default function ServicesPage({onBook}: {onBook: () => void}) {
   }, []);
 
   return (
-    <>
-      <Seo
-        title="Services | Relentiv"
-        description="Explore Relentiv services across web development, mobile delivery, game engineering, design, modernization, AI, and consulting."
+    <main ref={containerRef} className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden font-sans text-white">
+      <PageSeo
+        title="Services"
+        description="Explore Relentiv services across web, mobile, games, AI, legacy modernization, embedded teams, and technical consulting."
         path="/services"
-        schemas={[
-          buildBreadcrumbSchema([
-            {name: 'Home', path: '/'},
-            {name: 'Services', path: '/services'},
-          ]),
-        ]}
       />
-      <main ref={containerRef} id="main-content" className="relative min-h-screen overflow-hidden bg-[#050505] pt-32 pb-24 font-sans text-white">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-emerald-900/20 via-[#050505] to-black pointer-events-none"></div>
-        <div className="absolute top-0 left-1/2 z-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none"></div>
-        <div
-          className="absolute inset-0 z-0 opacity-[0.25] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage:
-              'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
-          }}
-        ></div>
+      {/* Gradients and Noise */}
+      <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/20 via-[#050505] to-black z-0 pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div
+        className="absolute inset-0 opacity-[0.25] mix-blend-overlay pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      ></div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
           <section aria-labelledby="services-page-title" className="mb-20 flex min-h-[50vh] flex-col justify-center">
