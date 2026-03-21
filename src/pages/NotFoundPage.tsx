@@ -14,13 +14,13 @@ export default function NotFoundPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/">
-              <a className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-gray-200">Home</a>
+              <span className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-gray-200">Home</span>
             </Link>
             <Link href="/services">
-              <a className="rounded-full border border-white/10 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5">Services</a>
+              <span className="rounded-full border border-white/10 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5">Services</span>
             </Link>
             <Link href="/contact">
-              <a className="rounded-full border border-white/10 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5">Contact</a>
+              <span className="rounded-full border border-white/10 px-6 py-3 text-sm text-white transition-colors hover:bg-white/5">Contact</span>
             </Link>
           </div>
         </div>

@@ -10,7 +10,7 @@ const blogPostsFile = path.join(__dirname, '../src/data/blogPosts.ts');
 const sitemapOutput = path.join(__dirname, '../public/sitemap.xml');
 
 const fileContents = fs.readFileSync(blogPostsFile, 'utf8');
-const blogIds = [...fileContents.matchAll(/id:\s*"([^"]+)"/g)].map((match) => match[1]);
+const blogIds = [...fileContents.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map((match) => match[1]);
 
 const blogRoutes = blogIds.map((id) => ({
   url: `/blog/${id}`,

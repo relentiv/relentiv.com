@@ -5,6 +5,7 @@ import App from './App.tsx';
 import './index.css';
 import {blogSlugs} from './sitemap-routes.js';
 import {pingIndexNow} from './utils/indexNow.js';
+import {isPrerender} from './utils/prerender';
 
 const rootElement = document.getElementById('root');
 
@@ -20,7 +21,7 @@ const app = (
   </StrictMode>
 );
 
-if (rootElement.hasChildNodes()) {
+if (!isPrerender && rootElement.hasChildNodes()) {
   hydrateRoot(rootElement, app);
 } else {
   createRoot(rootElement).render(app);

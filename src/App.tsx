@@ -2,9 +2,11 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, useLocation, Link } from "wouter";
+import AnalyticsTracker from "./components/AnalyticsTracker";
 import BookingModal from "./components/BookingModal";
+import CookieConsent from "./components/CookieConsent";
 import BlogPage from "./pages/BlogPage";
 import AboutPage from "./pages/AboutPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
@@ -21,7 +23,7 @@ const PAGE_TRANSITION_HOLD_SECONDS = 0.2;
 export default function App() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
@@ -54,7 +56,7 @@ export default function App() {
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="flex h-20 items-center justify-between">
               <Link href="/">
-                <a className="flex flex-shrink-0 items-center gap-2" aria-label="Relentiv home">
+                <span className="flex flex-shrink-0 items-center gap-2" aria-label="Relentiv home">
                   <span className="flex items-baseline text-2xl font-bold tracking-tight text-white">
                     Relent
                     <span className="relative inline-flex flex-col items-center">
@@ -63,24 +65,24 @@ export default function App() {
                     </span>
                     v
                   </span>
-                </a>
+                </span>
               </Link>
 
               <div className="hidden items-center space-x-10 text-sm font-medium text-gray-300 lg:flex">
                 <Link href="/">
-                  <a className="transition-colors hover:text-white">Home</a>
+                  Home
                 </Link>
                 <Link href="/services">
-                  <a className="transition-colors hover:text-white">Services</a>
+                  Services
                 </Link>
                 <Link href="/blog">
-                  <a className="transition-colors hover:text-white">Insights</a>
+                  Insights
                 </Link>
                 <Link href="/about">
-                  <a className="transition-colors hover:text-white">About</a>
+                  About
                 </Link>
                 <Link href="/contact">
-                  <a className="transition-colors hover:text-white">Contact</a>
+                  Contact
                 </Link>
               </div>
 
@@ -137,29 +139,29 @@ export default function App() {
 
           <div className="relative z-10 mt-4 flex flex-col space-y-8">
             <Link href="/">
-              <a onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
+              <span onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
                 Home
-              </a>
+              </span>
             </Link>
             <Link href="/services">
-              <a onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
+              <span onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
                 Services
-              </a>
+              </span>
             </Link>
             <Link href="/blog">
-              <a onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
+              <span onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
                 Insights
-              </a>
+              </span>
             </Link>
             <Link href="/about">
-              <a onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
+              <span onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
                 About
-              </a>
+              </span>
             </Link>
             <Link href="/contact">
-              <a onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
+              <span onClick={closeMobileMenu} className="text-4xl font-medium tracking-tight text-white transition-colors hover:text-emerald-400">
                 Contact
-              </a>
+              </span>
             </Link>
 
             <div className="mt-8 border-t border-white/10 pt-10">
@@ -734,17 +736,17 @@ export default function App() {
               <ul className="space-y-4 text-sm text-gray-400">
                 <li>
                   <Link href="/services">
-                    <a className="hover:text-accent-green">Services</a>
+                    Services
                   </Link>
                 </li>
                 <li>
                   <Link href="/blog">
-                    <a className="hover:text-accent-green">Blog</a>
+                    Blog
                   </Link>
                 </li>
                 <li>
                   <Link href="/about">
-                    <a className="hover:text-accent-green">About</a>
+                    About
                   </Link>
                 </li>
               </ul>
@@ -764,7 +766,7 @@ export default function App() {
                 </li>
                 <li>
                   <Link href="/contact">
-                    <a className="hover:text-accent-green">Contact</a>
+                    Contact
                   </Link>
                 </li>
               </ul>
@@ -774,10 +776,10 @@ export default function App() {
             <p>© 2026 Relentiv. All rights reserved.</p>
             <div className="flex gap-8">
               <Link href="/privacy-policy">
-                <a className="hover:text-white">Privacy Policy</a>
+                Privacy Policy
               </Link>
               <Link href="/terms">
-                <a className="hover:text-white">Terms of Service</a>
+                Terms of Service
               </Link>
             </div>
           </div>

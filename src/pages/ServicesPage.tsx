@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import PageSeo from "../components/PageSeo";
+import { services } from "../data/services";
 import { isPrerender } from "../utils/prerender";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -132,6 +133,5 @@ export default function ServicesPage({onBook}: {onBook: () => void}) {
           </section>
         </div>
       </main>
-    </>
   );
 }

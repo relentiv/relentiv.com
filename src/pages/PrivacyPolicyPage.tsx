@@ -4,6 +4,13 @@ import { ArrowLeft, BookOpen, Moon } from "lucide-react";
 import PageSeo from "../components/PageSeo";
 
 export default function PrivacyPolicyPage() {
+  const [, setLocation] = useLocation();
+  const [readingMode, setReadingMode] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div
       className={`min-h-screen transition-colors duration-500 ${
@@ -131,17 +138,19 @@ export default function PrivacyPolicyPage() {
             <li>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</li>
           </ul>
 
-      <h2>3. How We Use Information</h2>
-      <p>We use collected information to respond to inquiries, evaluate project fit, improve website performance, and support ongoing client communication. We do not sell personal data.</p>
+          <h2>3. How We Use Information</h2>
+          <p>We use collected information to respond to inquiries, evaluate project fit, improve website performance, and support ongoing client communication. We do not sell personal data.</p>
 
-      <h2>4. Data Retention</h2>
-      <p>We retain inquiry and project information for as long as needed to manage business operations, satisfy contractual obligations, and meet legal or compliance requirements.</p>
+          <h2>4. Data Retention</h2>
+          <p>We retain inquiry and project information for as long as needed to manage business operations, satisfy contractual obligations, and meet legal or compliance requirements.</p>
 
-      <h2>5. Your Rights</h2>
-      <p>You may request access, correction, or deletion of your personal information by contacting us. Where applicable, you may also object to processing or request data portability.</p>
+          <h2>5. Your Rights</h2>
+          <p>You may request access, correction, or deletion of your personal information by contacting us. Where applicable, you may also object to processing or request data portability.</p>
 
-      <h2>6. Contact</h2>
-      <p>For privacy-related questions or requests, contact Relentiv at contact@relentiv.com.</p>
-    </LegalPageLayout>
+          <h2>6. Contact</h2>
+          <p>For privacy-related questions or requests, contact Relentiv at contact@relentiv.com.</p>
+        </article>
+      </main>
+    </div>
   );
 }

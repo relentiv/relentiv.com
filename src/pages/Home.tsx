@@ -186,16 +186,16 @@ export default function HomePage({onBook}: HomePageProps) {
                 </h2>
               </div>
               <Link href="/blog">
-                <a className="rounded-full border border-white/10 px-6 py-2 text-sm text-white transition-colors hover:bg-white/5">
+                <span className="rounded-full border border-white/10 px-6 py-2 text-sm text-white transition-colors hover:bg-white/5">
                   All posts
-                </a>
+                </span>
               </Link>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               <article className="group relative flex h-[480px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/20">
                 <Link href="/blog/fintech-transformation">
-                  <a className="absolute inset-0 z-30" aria-label="Read Increase in user retention"></a>
+                  <span className="absolute inset-0 z-30" aria-label="Read Increase in user retention"></span>
                 </Link>
                 <div className="absolute top-0 left-0 h-2/3 w-full bg-gradient-to-b from-orange-600/40 to-transparent opacity-60"></div>
                 <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-orange-500/30 blur-[80px]"></div>
@@ -256,7 +256,7 @@ export default function HomePage({onBook}: HomePageProps) {
 
               <article className="group relative flex h-[480px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/20">
                 <Link href="/blog/ai-agents-enterprise">
-                  <a className="absolute inset-0 z-30" aria-label="Read Introducing AI Agents for Enterprise"></a>
+                  <span className="absolute inset-0 z-30" aria-label="Read Introducing AI Agents for Enterprise"></span>
                 </Link>
                 <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-br from-emerald-900/40 via-[#0a0a0a] to-[#0a0a0a] opacity-80"></div>
                 <div className="absolute top-1/2 left-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.15)_0%,transparent_70%)]"></div>
@@ -294,7 +294,7 @@ export default function HomePage({onBook}: HomePageProps) {
 
               <article className="group relative flex h-[480px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/20">
                 <Link href="/blog/nexus-logistics-story">
-                  <a className="absolute inset-0 z-30" aria-label="Read Nexus Logistics story"></a>
+                  <span className="absolute inset-0 z-30" aria-label="Read Nexus Logistics story"></span>
                 </Link>
                 <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 via-purple-900/20 to-transparent opacity-80"></div>
                 <div className="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-indigo-500/20 blur-[80px]"></div>
