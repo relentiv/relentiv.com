@@ -17,10 +17,14 @@ export const blogSlugs = [
   '/blog/nexus-logistics-story',
 ];
 
+// These routes need direct-link support in production, but should stay out of the public sitemap.
+export const adminPrerenderRoutes = ['/internal/portal/login', '/internal/portal/leads'];
+
 export const prerenderRoutes = [
   ...staticRoutes.map((route) => route.url),
   ...blogPaginationRoutes,
   ...blogSlugs,
+  ...adminPrerenderRoutes,
 ];
 
 export const specialPrerenderRoutes = [
