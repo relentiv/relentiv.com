@@ -9,14 +9,11 @@ export default function Login() {
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((user) => {
       if (user) {
         setLocation('/internal/portal/leads');
-      } else {
-        setIsCheckingAuth(false);
       }
     });
     return () => unsubscribe();
@@ -54,14 +51,6 @@ export default function Login() {
       setIsLoading(false);
     }
   };
-
-  if (isCheckingAuth) {
-    return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4">

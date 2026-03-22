@@ -5,13 +5,14 @@ import {
   onAuthStateChanged as firebaseOnAuthStateChanged,
   User
 } from "firebase/auth";
-import { auth, db } from "./config";
+import { getFirebaseServices } from "./config";
 import { doc, getDoc } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async (): Promise<User | null> => {
   try {
+    const { auth, db } = getFirebaseServices();
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     
@@ -44,6 +45,7 @@ export const signInWithGoogle = async (): Promise<User | null> => {
 
 export const signOut = async (): Promise<void> => {
   try {
+    const { auth } = getFirebaseServices();
     await firebaseSignOut(auth);
   } catch (error) {
     console.error("Error signing out:", error);
@@ -52,5 +54,6 @@ export const signOut = async (): Promise<void> => {
 };
 
 export const onAuthStateChanged = (callback: (user: User | null) => void) => {
+  const { auth } = getFirebaseServices();
   return firebaseOnAuthStateChanged(auth, callback);
 };
