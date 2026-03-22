@@ -30,7 +30,6 @@ export default function ServicesPage({onBook}: {onBook: () => void}) {
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (isPrerender) {
       return;
     }

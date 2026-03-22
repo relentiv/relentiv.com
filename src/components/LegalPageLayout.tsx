@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useState} from 'react';
+import {ReactNode, useState} from 'react';
 import {ArrowLeft, BookOpen, Moon} from 'lucide-react';
 import {useLocation} from 'wouter';
 import Seo from './Seo';
@@ -21,10 +21,6 @@ export default function LegalPageLayout({
 }: LegalPageLayoutProps) {
   const [, setLocation] = useLocation();
   const [readingMode, setReadingMode] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <>

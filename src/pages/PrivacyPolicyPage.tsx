@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "wouter";
 import { ArrowLeft, BookOpen, Moon } from "lucide-react";
 import PageSeo from "../components/PageSeo";
@@ -6,10 +6,6 @@ import PageSeo from "../components/PageSeo";
 export default function PrivacyPolicyPage() {
   const [, setLocation] = useLocation();
   const [readingMode, setReadingMode] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div
