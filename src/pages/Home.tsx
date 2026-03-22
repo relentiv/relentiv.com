@@ -9,6 +9,9 @@ interface HomePageProps {
 
 export default function HomePage({onBook}: HomePageProps) {
   const [, setLocation] = useLocation();
+  const heroVideoSrc = encodeURI(
+    '/Black background Abstraction effect. Spinning Black Wave Lines. Looped animated background. - Motion Backgrounds Effects (1080p, h264).mp4',
+  );
 
   const homeSchemas = [
     {
@@ -44,13 +47,18 @@ export default function HomePage({onBook}: HomePageProps) {
       <main id="main-content">
         <section className="relative flex min-h-[90vh] items-center overflow-hidden pt-32 pb-24 lg:pt-48 lg:pb-32" aria-labelledby="home-hero-title">
           <div className="video-background" aria-hidden="true">
-            <iframe
-              src="https://www.youtube.com/embed/khVfTDZQ7FY?autoplay=1&mute=1&controls=0&loop=1&playlist=khVfTDZQ7FY&modestbranding=1&showinfo=0&playsinline=1&rel=0&disablekb=1&start=1&end=10"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              title="Relentiv hero background video"
-            ></iframe>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster="/og-image.jpg"
+              className="bg-black"
+              disablePictureInPicture
+            >
+              <source src={heroVideoSrc} type="video/mp4" />
+            </video>
           </div>
 
           <div className="absolute inset-0 z-[-1] bg-black/40"></div>

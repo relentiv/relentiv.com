@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { ArrowLeft, BookOpen, Moon } from "lucide-react";
 import { blogPosts } from "../data/blogPosts";
@@ -8,10 +8,6 @@ export default function BlogPage() {
   const [match, params] = useRoute<{ id: string }>("/blog/:id");
   const [, setLocation] = useLocation();
   const [readingMode, setReadingMode] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [params?.id]);
 
   if (!match || !params?.id) return null;
 

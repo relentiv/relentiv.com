@@ -88,8 +88,8 @@ export default function ContactPage() {
                 Contact details
               </h2>
               <p className="mb-4 text-gray-400">Email: contact@relentiv.com</p>
-              <p className="mb-4 text-gray-400">Phone: +1 (415) 555-0198</p>
-              <p className="text-gray-400">Location: San Francisco, California</p>
+              {/* <p className="mb-4 text-gray-400">Phone: +1 (415) 555-0198</p> */}
+              <p className="text-gray-400">Kudlu Gate, Bengaluru, Karnataka, India </p>
             </aside>
           </section>
         </div>

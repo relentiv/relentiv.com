@@ -2,12 +2,13 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Switch, useLocation, Link } from "wouter";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 import BookingModal from "./components/BookingModal";
 import CookieConsent from "./components/CookieConsent";
 import PageSeo from "./components/PageSeo";
+import ScrollRestoration from "./components/ScrollRestoration";
 import BlogListPage from "./pages/BlogListPage";
 import BlogPage from "./pages/BlogPage";
 import ContactPage from "./pages/ContactPage";
@@ -19,17 +20,27 @@ import TermsPage from "./pages/TermsPage";
 import HowWeWork from "./components/HowWeWork";
 import PageTransition from "./components/PageTransition";
 import { isPrerender } from "./utils/prerender";
+const Login = lazy(() => import("./pages/admin/Login"));
+const LeadsDashboard = lazy(() => import("./pages/admin/LeadsDashboard"));
+const LeadDetail = lazy(() => import("./pages/admin/LeadDetail"));
+const ProtectedRoute = lazy(() => import("./components/admin/ProtectedRoute"));
 
 // --- PAGE TRANSITION SETTINGS ---
 // Set to false to disable transitions entirely
 const ENABLE_PAGE_TRANSITIONS = true;
 const PAGE_TRANSITION_DURATION_SECONDS = 2.0;
 const PAGE_TRANSITION_HOLD_SECONDS = 0.2;
+const ADMIN_ROUTE_FALLBACK = (
+  <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 export default function App() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const isAdminRoute = location.startsWith("/internal/portal");
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
@@ -49,85 +60,88 @@ export default function App() {
         hold={PAGE_TRANSITION_HOLD_SECONDS}
       />
       <AnalyticsTracker />
+      <ScrollRestoration />
 
-      <header>
-        <nav
-          aria-label="Main navigation"
-          className={`fixed top-0 z-[60] w-full transition-colors duration-300 ${
-            isMobileMenuOpen
-              ? 'border-transparent bg-[#050505]'
-              : 'nav-blur border-b border-white/10 bg-deep-forest/90'
-          }`}
-        >
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <div className="flex h-20 items-center justify-between">
-              <Link href="/">
-                <span className="flex flex-shrink-0 items-center gap-2" aria-label="Relentiv home">
-                  <span className="flex items-baseline text-2xl font-bold tracking-tight text-white">
-                    Relent
-                    <span className="relative inline-flex flex-col items-center">
-                      <span className="absolute top-[0.2em] h-[0.2em] w-[0.25em] bg-[#E25822]"></span>
-                      <span>ı</span>
+      {!isAdminRoute ? (
+        <header>
+          <nav
+            aria-label="Main navigation"
+            className={`fixed top-0 z-[60] w-full transition-colors duration-300 ${
+              isMobileMenuOpen
+                ? 'border-transparent bg-[#050505]'
+                : 'nav-blur border-b border-white/10 bg-deep-forest/90'
+            }`}
+          >
+            <div className="mx-auto max-w-7xl px-6 lg:px-12">
+              <div className="flex h-20 items-center justify-between">
+                <Link href="/">
+                  <span className="flex flex-shrink-0 items-center gap-2" aria-label="Relentiv home">
+                    <span className="flex items-baseline text-2xl font-bold tracking-tight text-white">
+                      Relent
+                      <span className="relative inline-flex flex-col items-center">
+                        <span className="absolute top-[0.2em] h-[0.2em] w-[0.25em] bg-[#E25822]"></span>
+                        <span>ı</span>
+                      </span>
+                      v
                     </span>
-                    v
                   </span>
-                </span>
-              </Link>
+                </Link>
 
-              <div className="hidden items-center space-x-10 text-sm font-medium text-gray-300 lg:flex">
-                <Link href="/" className="transition-colors hover:text-white">
-                  Home
-                </Link>
-                <Link href="/services" className="transition-colors hover:text-white">
-                  Services
-                </Link>
-                <Link href="/blog" className="transition-colors hover:text-white">
-                  Insights
-                </Link>
-                <Link href="/about" className="transition-colors hover:text-white">
-                  About
-                </Link>
-                <Link href="/contact" className="transition-colors hover:text-white">
-                  Contact
-                </Link>
-              </div>
+                <div className="hidden items-center space-x-10 text-sm font-medium text-gray-300 lg:flex">
+                  <Link href="/" className="transition-colors hover:text-white">
+                    Home
+                  </Link>
+                  <Link href="/services" className="transition-colors hover:text-white">
+                    Services
+                  </Link>
+                  <Link href="/blog" className="transition-colors hover:text-white">
+                    Insights
+                  </Link>
+                  <Link href="/about" className="transition-colors hover:text-white">
+                    About
+                  </Link>
+                  <Link href="/contact" className="transition-colors hover:text-white">
+                    Contact
+                  </Link>
+                </div>
 
-              <div className="hidden lg:block">
-                <button
-                  type="button"
-                  onClick={() => setIsBookingModalOpen(true)}
-                  className="rounded-full bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
-                >
-                  Contact Us
-                </button>
-              </div>
+                <div className="hidden lg:block">
+                  <button
+                    type="button"
+                    onClick={() => setIsBookingModalOpen(true)}
+                    className="rounded-full bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
+                  >
+                    Contact Us
+                  </button>
+                </div>
 
-              <div className="lg:hidden">
-                <button
-                  type="button"
-                  aria-expanded={isMobileMenuOpen}
-                  aria-controls="mobile-navigation"
-                  aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-                  className="p-2 text-white"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                  {isMobileMenuOpen ? (
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                  ) : (
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path d="M4 6h16M4 12h16m-7 6h7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
-                    </svg>
-                  )}
-                </button>
+                <div className="lg:hidden">
+                  <button
+                    type="button"
+                    aria-expanded={isMobileMenuOpen}
+                    aria-controls="mobile-navigation"
+                    aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                    className="p-2 text-white"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  >
+                    {isMobileMenuOpen ? (
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                    ) : (
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16m-7 6h7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </nav>
-      </header>
+          </nav>
+        </header>
+      ) : null}
 
-      {isMobileMenuOpen ? (
+      {!isAdminRoute && isMobileMenuOpen ? (
         <aside
           id="mobile-navigation"
           aria-label="Mobile navigation"
@@ -190,6 +204,25 @@ export default function App() {
       ) : null}
 
       <Switch>
+        <Route path="/internal/portal/login">
+          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
+            <Login />
+          </Suspense>
+        </Route>
+        <Route path="/internal/portal/leads/:id">
+          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
+            <ProtectedRoute>
+              <LeadDetail />
+            </ProtectedRoute>
+          </Suspense>
+        </Route>
+        <Route path="/internal/portal/leads">
+          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
+            <ProtectedRoute>
+              <LeadsDashboard />
+            </ProtectedRoute>
+          </Suspense>
+        </Route>
         <Route path="/">
           <main>
             <PageSeo
@@ -267,7 +300,7 @@ export default function App() {
                     <div className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-8">
                       Trusted by leading enterprises
                     </div>
-                    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70 grayscale invert transition-all">
+                    <div className="hidden flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70 grayscale invert transition-all">
                       <img
                         alt="Google"
                         className="h-6 md:h-7"
@@ -731,85 +764,89 @@ export default function App() {
         </Route>
       </Switch>
 
-      {/* Footer */}
-      <footer className="relative z-10 bg-deep-forest text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
-            <div className="col-span-2">
-              <div className="mb-6 flex items-center gap-2">
-                <span className="flex items-baseline text-2xl font-bold tracking-tight text-white">
-                  Relent
-                  <span className="relative inline-flex flex-col items-center">
-                    <span className="absolute top-[0.2em] h-[0.2em] w-[0.25em] bg-[#E25822]"></span>
-                    <span>ı</span>
-                  </span>
-                  v
-                </span>
+      {!isAdminRoute ? (
+        <>
+          {/* Footer */}
+          <footer className="relative z-10 bg-deep-forest text-white py-20">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12">
+              <div className="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+                <div className="col-span-2">
+                  <div className="mb-6 flex items-center gap-2">
+                    <span className="flex items-baseline text-2xl font-bold tracking-tight text-white">
+                      Relent
+                      <span className="relative inline-flex flex-col items-center">
+                        <span className="absolute top-[0.2em] h-[0.2em] w-[0.25em] bg-[#E25822]"></span>
+                        <span>ı</span>
+                      </span>
+                      v
+                    </span>
+                  </div>
+                  <p className="mb-8 max-w-sm text-gray-400">
+                    Global technology leaders driving growth through innovation, strategy, and engineering excellence.
+                  </p>
+                  <address className="sr-only not-italic">
+                    100 Innovation Drive, Suite 400, San Francisco, CA 94105. contact@relentiv.com. +1 (415) 555-0198.
+                  </address>
+                </div>
+                <div>
+                  <h2 className="mb-6 font-bold">Explore</h2>
+                  <ul className="space-y-4 text-sm text-gray-400">
+                    <li>
+                      <Link href="/services" className="hover:text-accent-green">
+                        Services
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/blog" className="hover:text-accent-green">
+                        Blog
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/about" className="hover:text-accent-green">
+                        About
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h2 className="mb-6 font-bold">Connect</h2>
+                  <ul className="space-y-4 text-sm text-gray-400">
+                    <li>
+                      <a className="hover:text-accent-green" href="https://linkedin.com/company/relentiv" rel="noreferrer" target="_blank">
+                        LinkedIn
+                      </a>
+                    </li>
+                    <li>
+                      <a className="hover:text-accent-green" href="https://www.instagram.com/relentiv.global" rel="noreferrer" target="_blank">
+                        Instagram
+                      </a>
+                    </li>
+                    <li>
+                      <Link href="/contact" className="hover:text-accent-green">
+                        Contact
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <p className="mb-8 max-w-sm text-gray-400">
-                Global technology leaders driving growth through innovation, strategy, and engineering excellence.
-              </p>
-              <address className="sr-only not-italic">
-                100 Innovation Drive, Suite 400, San Francisco, CA 94105. contact@relentiv.com. +1 (415) 555-0198.
-              </address>
-            </div>
-            <div>
-              <h2 className="mb-6 font-bold">Explore</h2>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li>
-                  <Link href="/services" className="hover:text-accent-green">
-                    Services
+              <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-gray-500 md:flex-row">
+                <p>© 2026 Relentiv. All rights reserved.</p>
+                <div className="flex gap-8">
+                  <Link href="/privacy-policy">
+                    <span className="hover:text-white">Privacy Policy</span>
                   </Link>
-                </li>
-                <li>
-                  <Link href="/blog" className="hover:text-accent-green">
-                    Blog
+                  <Link href="/terms">
+                    <span className="hover:text-white">Terms of Service</span>
                   </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-accent-green">
-                    About
-                  </Link>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
-            <div>
-              <h2 className="mb-6 font-bold">Connect</h2>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li>
-                  <a className="hover:text-accent-green" href="https://linkedin.com/company/relentiv" rel="noreferrer" target="_blank">
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-accent-green" href="https://twitter.com/relentiv" rel="noreferrer" target="_blank">
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-accent-green">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-gray-500 md:flex-row">
-            <p>© 2026 Relentiv. All rights reserved.</p>
-            <div className="flex gap-8">
-              <Link href="/privacy-policy">
-                <span className="hover:text-white">Privacy Policy</span>
-              </Link>
-              <Link href="/terms">
-                <span className="hover:text-white">Terms of Service</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+          </footer>
 
-      <CookieConsent />
-      <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+          <CookieConsent />
+          <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} />
+        </>
+      ) : null}
     </div>
   );
 }

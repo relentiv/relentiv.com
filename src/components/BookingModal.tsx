@@ -1,4 +1,4 @@
-import React, {useEffect, useId, useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -9,13 +9,9 @@ const BUDGET_OPTIONS = ['< $10k', '$10k - $50k', '$50k - $100k', '$100k+'];
 const TIMELINE_OPTIONS = ['ASAP', '1-3 months', '3-6 months', 'Flexible'];
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
-  const nameId = useId();
-  const emailId = useId();
-  const companyId = useId();
-  const descriptionId = useId();
-  const dateId = useId();
-  const timeId = useId();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,21 +30,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -62,9 +43,32 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(4); // Move to success state
+    setIsSubmitting(true);
+    setSubmitError(null);
+    
+    try {
+      const firebaseLeads = await import('../lib/firebase/leads');
+
+      await firebaseLeads.submitLead({
+        fullName: formData.name,
+        workEmail: formData.email,
+        companyName: formData.company,
+        budget: formData.budget,
+        expectedTimeline: formData.timeline,
+        meetingDate: formData.date,
+        meetingTime: formData.time,
+        message: formData.description
+      });
+      setStep(4); // Move to success state
+    } catch (error) {
+      console.error("Failed to submit lead:", error);
+      const { getLeadSubmissionErrorMessage } = await import('../lib/firebase/leads');
+      setSubmitError(getLeadSubmissionErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const generateCalendarLink = () => {
@@ -79,15 +83,15 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
       const params = new URLSearchParams({
         action: 'TEMPLATE',
-        text: `Discovery Call: ${formData.company || formData.name} x Relentiv`,
+        text: `Discovery Call: ${formData.company || formData.name} x INDI AINTELLIGENCE`,
         dates: `${formatDt(start)}/${formatDt(end)}`,
         details: `Project Details:\n${formData.description}\n\nBudget: ${formData.budget}\nTimeline: ${formData.timeline}\nClient: ${formData.name} (${formData.email})`,
-        add: 'contact@relentiv.com',
+        add: 'shavitriverma111@gmail.com',
       });
 
       return `https://calendar.google.com/calendar/render?${params.toString()}`;
     } catch (error) {
-      return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Discovery+Call+x+Relentiv&add=contact%40relentiv.com';
+      return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Discovery+Call+x+INDI+AINTELLIGENCE&add=shavitriverma111@gmail.com';
     }
   };
 
@@ -96,38 +100,29 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const isStep3Valid = formData.date !== '' && formData.time !== '';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" role="presentation">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Backdrop */}
-      <button
-        type="button"
-        aria-label="Close dialog"
+      <div 
         className="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity animate-in fade-in duration-300"
         onClick={onClose}
-      ></button>
+      ></div>
 
       {/* Modal Content */}
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="booking-modal-title"
-        className="relative w-full max-w-2xl bg-[#050505] border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in slide-in-from-bottom-8 fade-in duration-500"
-      >
+      <div className="relative w-full max-w-2xl bg-[#050505] border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in slide-in-from-bottom-8 fade-in duration-500">
         
         {/* Header */}
         <div className="flex items-center justify-between p-8 pb-6">
           <div className="flex items-center gap-4">
             {step > 1 && step < 4 && (
               <button 
-                type="button"
                 onClick={prevStep}
-                aria-label="Go to previous step"
                 className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-all"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7"></path></svg>
               </button>
             )}
             <div>
-              <h2 id="booking-modal-title" className="text-2xl font-medium text-white tracking-tight">
+              <h2 className="text-2xl font-medium text-white tracking-tight">
                 {step === 4 ? 'Meeting Confirmed' : 'Let\'s build together'}
               </h2>
               {step < 4 && (
@@ -143,9 +138,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           </div>
           <button 
-            type="button"
             onClick={onClose}
-            aria-label="Close modal"
             className="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:text-white hover:bg-white/10 transition-all"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,9 +155,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label htmlFor={nameId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
                   <input 
-                    id={nameId}
                     type="text" 
                     name="name"
                     value={formData.name}
@@ -175,9 +167,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor={emailId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Work Email</label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Work Email</label>
                   <input 
-                    id={emailId}
                     type="email" 
                     name="email"
                     value={formData.email}
@@ -187,9 +178,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor={companyId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Company <span className="text-gray-600">(Optional)</span></label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Company <span className="text-gray-600">(Optional)</span></label>
                   <input 
-                    id={companyId}
                     type="text" 
                     name="company"
                     value={formData.company}
@@ -201,7 +191,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </div>
 
               <button 
-                type="button"
                 onClick={nextStep}
                 disabled={!isStep1Valid}
                 className="w-full py-4 bg-white text-black font-semibold rounded-2xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
@@ -221,7 +210,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 <div className="grid grid-cols-2 gap-3">
                   {BUDGET_OPTIONS.map(opt => (
                     <button
-                      type="button"
                       key={opt}
                       onClick={() => handleSelect('budget', opt)}
                       className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
@@ -241,7 +229,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 <div className="grid grid-cols-2 gap-3">
                   {TIMELINE_OPTIONS.map(opt => (
                     <button
-                      type="button"
                       key={opt}
                       onClick={() => handleSelect('timeline', opt)}
                       className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
@@ -257,9 +244,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor={descriptionId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Project Overview</label>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Project Overview</label>
                 <textarea 
-                  id={descriptionId}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -270,7 +256,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </div>
 
               <button 
-                type="button"
                 onClick={nextStep}
                 disabled={!isStep2Valid}
                 className="w-full py-4 bg-white text-black font-semibold rounded-2xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
@@ -298,39 +283,45 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10">
                   <div className="space-y-2">
-                    <label htmlFor={dateId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Date</label>
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Date</label>
                     <input 
-                      id={dateId}
                       required
                       type="date" 
                       name="date"
                       value={formData.date}
                       onChange={handleChange}
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500/50 transition-all [color-scheme:dark]"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500/50 transition-all [color-scheme:dark] disabled:opacity-50"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor={timeId} className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Time</label>
+                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest ml-1">Time</label>
                     <input 
-                      id={timeId}
                       required
                       type="time" 
                       name="time"
                       value={formData.time}
                       onChange={handleChange}
-                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500/50 transition-all [color-scheme:dark]"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500/50 transition-all [color-scheme:dark] disabled:opacity-50"
                     />
                   </div>
                 </div>
               </div>
 
+              {submitError && (
+                <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm">
+                  {submitError}
+                </div>
+              )}
+
               <button 
                 type="submit"
-                disabled={!isStep3Valid}
+                disabled={!isStep3Valid || isSubmitting}
                 className="w-full py-4 bg-emerald-500 text-black font-bold rounded-2xl hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]"
               >
-                Confirm Booking
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                {isSubmitting ? 'Confirming...' : 'Confirm Booking'}
+                {!isSubmitting && <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>}
               </button>
             </form>
           )}
@@ -365,7 +356,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   Add to Google Calendar
                 </a>
                 <button 
-                  type="button"
                   onClick={onClose}
                   className="w-full py-4 bg-transparent text-gray-400 font-medium rounded-2xl hover:text-white hover:bg-white/5 transition-colors"
                 >

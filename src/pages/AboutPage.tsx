@@ -27,31 +27,31 @@ if (gsap?.registerPlugin && ScrollTrigger) {
 const techStack = [
   {
     name: 'React',
-    img: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80&fm=webp',
+    img: 'https://d585tldpucybw.cloudfront.net/sfimages/default-source/blogs/templates/social/reactt-light_1200x628.png?sfvrsn=43eb5f2a_2',
   },
   {
     name: 'Next.js',
-    img: 'https://images.unsplash.com/photo-1618477247222-ac60c6218780?w=600&q=80&fm=webp',
+    img: 'https://miro.medium.com/0*Gl4ff9i0WxHILWTr',
   },
   {
     name: 'TypeScript',
-    img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&q=80&fm=webp',
+    img: 'https://blog.logrocket.com/wp-content/uploads/0223/05/when-to-use-never-unknown-typescript.png',
   },
   {
     name: 'Tailwind',
-    img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=600&q=80&fm=webp',
+    img: 'https://blog.logrocket.com/wp-content/uploads/2024/03/exploring-tailwind-oxide.png',
   },
   {
     name: 'GSAP',
-    img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80&fm=webp',
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWBwhIV_j00chhptGrQC3C8oSNGGzqWPBrkw&s',
   },
   {
     name: 'Node.js',
-    img: 'https://images.unsplash.com/photo-1627398240309-08b06f9d94fd?w=600&q=80&fm=webp',
+    img: 'https://blog.logrocket.com/wp-content/uploads/2021/09/file-processing-node-js-comprehensive-guide.png',
   },
   {
     name: 'Figma',
-    img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80&fm=webp',
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJeVsTXItDihpg1o8bqYBZc8t_JUJlTejx-w&s',
   },
   {
     name: 'WebGL',
@@ -239,7 +239,7 @@ export default function AboutPage() {
                   <div className="group relative aspect-square overflow-hidden rounded-2xl">
                     <div className="absolute inset-0 z-10 bg-black/20 transition-colors group-hover:bg-transparent"></div>
                     <img
-                      src="https://images.unsplash.com/photo-1578301978693-85fa9c03fa37?q=80&w=800&auto=format&fit=crop&fm=webp"
+                      src="https://i0.wp.com/blog.vibeadventures.com/wp-content/uploads/2024/08/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg?resize=640%2C820&ssl=1"
                       alt="Portrait composition reflecting product clarity"
                       className="h-full w-full object-cover grayscale opacity-80 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
                       width="800"
@@ -296,15 +296,13 @@ export default function AboutPage() {
             <div className="grid gap-16 md:grid-cols-2">
               <div className="contact-reveal">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 md:text-sm">Headquarters</p>
-                <h2 className="mb-6 text-3xl font-medium">San Francisco, CA</h2>
+                <h2 className="mb-6 text-3xl font-medium">Bengaluru, Karnataka</h2>
                 <address className="max-w-sm text-lg leading-relaxed text-gray-400 not-italic">
-                  100 Innovation Drive
+                  Kudlu Metro Station
                   <br />
-                  Suite 400
+                  Bengaluru, Karnataka, 560068
                   <br />
-                  San Francisco, CA 94105
-                  <br />
-                  United States
+                  India
                 </address>
               </div>
 
@@ -315,9 +313,9 @@ export default function AboutPage() {
                 <a href="mailto:hello@relentiv.com" className="mb-6 inline-block w-fit text-3xl font-light text-gray-400 transition-colors hover:text-white md:text-5xl">
                   hello@relentiv.com
                 </a>
-                <a href="tel:+14155550198" className="inline-block w-fit text-2xl font-light text-gray-500 transition-colors hover:text-gray-300 md:text-4xl">
+                {/* <a href="tel:+14155550198" className="inline-block w-fit text-2xl font-light text-gray-500 transition-colors hover:text-gray-300 md:text-4xl">
                   +1 (415) 555-0198
-                </a>
+                </a> */}
               </div>
             </div>
           </section>
