@@ -49,11 +49,16 @@ export const signOut = async (): Promise<void> => {
     await firebaseSignOut(auth);
   } catch (error) {
     console.error("Error signing out:", error);
-    throw error;
   }
 };
 
 export const onAuthStateChanged = (callback: (user: User | null) => void) => {
-  const { auth } = getFirebaseServices();
-  return firebaseOnAuthStateChanged(auth, callback);
+  try {
+    const { auth } = getFirebaseServices();
+    return firebaseOnAuthStateChanged(auth, callback);
+  } catch (error) {
+    console.error("Firebase auth is unavailable:", error);
+    callback(null);
+    return () => {};
+  }
 };
