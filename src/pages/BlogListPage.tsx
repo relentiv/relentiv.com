@@ -59,7 +59,7 @@ export default function BlogListPage({page}: BlogListPageProps) {
                   <p className="mb-4 text-sm uppercase tracking-wider text-gray-400">{post.type}</p>
                   <h2 className="mb-4 text-3xl font-medium tracking-tight text-white">
                     <Link href={`/blog/${post.slug}`}>
-                      <a className="transition-colors hover:text-emerald-300">{post.title}</a>
+                      <span className="transition-colors hover:text-emerald-300">{post.title}</span>
                     </Link>
                   </h2>
                   <p className="mb-6 max-w-3xl leading-relaxed text-gray-400">{post.description}</p>
@@ -72,9 +72,9 @@ export default function BlogListPage({page}: BlogListPageProps) {
           <nav aria-label="Blog pagination" className="mt-12 flex items-center justify-between gap-4">
             {prevPath ? (
               <Link href={prevPath}>
-                <a className="rounded-full border border-white/10 px-5 py-2 text-sm text-white transition-colors hover:bg-white/5">
+                <span className="rounded-full border border-white/10 px-5 py-2 text-sm text-white transition-colors hover:bg-white/5">
                   Previous
-                </a>
+                </span>
               </Link>
             ) : (
               <span></span>
@@ -84,9 +84,9 @@ export default function BlogListPage({page}: BlogListPageProps) {
             </p>
             {nextPath ? (
               <Link href={nextPath}>
-                <a className="rounded-full border border-white/10 px-5 py-2 text-sm text-white transition-colors hover:bg-white/5">
+                <span className="rounded-full border border-white/10 px-5 py-2 text-sm text-white transition-colors hover:bg-white/5">
                   Next
-                </a>
+                </span>
               </Link>
             ) : (
               <span></span>

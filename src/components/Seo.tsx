@@ -1,4 +1,4 @@
-import {Helmet} from 'react-helmet-async';
+import {Helmet} from '../lib/helmet';
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,

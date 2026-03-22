@@ -2,7 +2,7 @@ import {useId} from 'react';
 import Seo from '../components/Seo';
 import {buildBreadcrumbSchema} from '../lib/site';
 
-const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_FORM_ENDPOINT;
+const CONTACT_ENDPOINT = import.meta.env?.VITE_CONTACT_FORM_ENDPOINT;
 
 export default function ContactPage() {
   const nameId = useId();

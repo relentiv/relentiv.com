@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
 
-const GA_ID = import.meta.env.VITE_GA4_ID;
+const GA_ID = import.meta.env?.VITE_GA4_ID;
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!import.meta.env.PROD || !GA_ID) {
+    if (!import.meta.env?.PROD || !GA_ID) {
       return;
     }
 

@@ -1,10 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import Seo from '../components/Seo';
-import {buildBreadcrumbSchema} from '../lib/site';
+import React, { useEffect, useRef, useState } from "react";
+import * as GsapModule from "gsap";
+import * as ScrollTriggerModule from "gsap/ScrollTrigger";
+import PageSeo from "../components/PageSeo";
+import { isPrerender } from "../utils/prerender";
 
-gsap.registerPlugin(ScrollTrigger);
+const gsap = (
+  GsapModule as unknown as {
+    default: { gsap: typeof import("gsap").gsap };
+  }
+).default.gsap;
+const ScrollTrigger = (
+  ScrollTriggerModule as unknown as {
+    default: { ScrollTrigger: typeof import("gsap/ScrollTrigger").ScrollTrigger };
+  }
+).default.ScrollTrigger;
+
+if (gsap?.registerPlugin && ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const techStack = [
   {
@@ -59,6 +72,10 @@ export default function AboutPage() {
   }, []);
 
   useEffect(() => {
+    if (isPrerender) {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.fromTo('.hero-text', {y: 60, opacity: 0}, {y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out'});
 
@@ -118,37 +135,38 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <>
-      <Seo
-        title="About | Relentiv"
-        description="Learn how Relentiv combines engineering, design, and product strategy to deliver high-trust digital solutions."
+    <main
+      ref={containerRef}
+      className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden font-sans text-white"
+    >
+      <PageSeo
+        title="About Relentiv"
+        description="Meet the designers, engineers, and strategists behind Relentiv’s enterprise product and digital transformation work."
         path="/about"
-        schemas={[
-          buildBreadcrumbSchema([
-            {name: 'Home', path: '/'},
-            {name: 'About', path: '/about'},
-          ]),
-        ]}
       />
-      <main ref={containerRef} id="main-content" className="relative min-h-screen overflow-hidden bg-[#050505] pt-32 pb-24 font-sans text-white">
-        {hoveredImage ? (
-          <div
-            className="fixed z-50 h-64 w-64 overflow-hidden rounded-2xl shadow-2xl shadow-black/50 transition-transform duration-100 ease-out pointer-events-none md:h-80 md:w-80"
-            style={{left: mousePos.x, top: mousePos.y, transform: 'translate(-50%, -50%)'}}
-          >
-            <img src={hoveredImage} alt="Relentiv technology visualization" className="h-full w-full object-cover" width="320" height="320" />
-          </div>
-        ) : null}
-
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a0a] via-[#050505] to-black pointer-events-none"></div>
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.03),transparent_50%)] pointer-events-none"></div>
-        <div
-          className="absolute inset-0 z-0 opacity-[0.25] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage:
-              'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
+      {/* Floating Hover Image for Tech Stack */}
+      {hoveredImage && (
+        <div 
+          className="fixed pointer-events-none z-50 w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden transition-transform duration-100 ease-out shadow-2xl shadow-black/50"
+          style={{ 
+            left: mousePos.x, 
+            top: mousePos.y,
+            transform: 'translate(-50%, -50%)'
           }}
-        ></div>
+        >
+          <img src={hoveredImage} alt="Tech Visualization" className="w-full h-full object-cover" />
+        </div>
+      )}
+
+      {/* Gradients and Noise */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#050505] to-black z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.03),transparent_50%)] z-0 pointer-events-none"></div>
+      <div
+        className="absolute inset-0 opacity-[0.25] mix-blend-overlay pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      ></div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
           <section ref={heroTextRef} className="mb-32 flex min-h-[70vh] flex-col justify-center" aria-labelledby="about-hero-title">
@@ -300,6 +318,5 @@ export default function AboutPage() {
           </section>
         </div>
       </main>
-    </>
   );
 }
