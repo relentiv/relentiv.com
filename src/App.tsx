@@ -7,12 +7,18 @@ import { Route, Switch, useLocation, Link } from "wouter";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 import BookingModal from "./components/BookingModal";
 import CookieConsent from "./components/CookieConsent";
+import PageSeo from "./components/PageSeo";
+import BlogListPage from "./pages/BlogListPage";
 import BlogPage from "./pages/BlogPage";
+import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import ServicesPage from "./pages/ServicesPage";
+import TermsPage from "./pages/TermsPage";
 import HowWeWork from "./components/HowWeWork";
 import PageTransition from "./components/PageTransition";
+import { isPrerender } from "./utils/prerender";
 
 // --- PAGE TRANSITION SETTINGS ---
 // Set to false to disable transitions entirely
@@ -38,7 +44,7 @@ export default function App() {
     <div className="antialiased font-sans">
       {/* Page Transition Overlay */}
       <PageTransition 
-        enabled={ENABLE_PAGE_TRANSITIONS} 
+        enabled={ENABLE_PAGE_TRANSITIONS && !isPrerender} 
         duration={PAGE_TRANSITION_DURATION_SECONDS}
         hold={PAGE_TRANSITION_HOLD_SECONDS}
       />
@@ -69,19 +75,19 @@ export default function App() {
               </Link>
 
               <div className="hidden items-center space-x-10 text-sm font-medium text-gray-300 lg:flex">
-                <Link href="/">
+                <Link href="/" className="transition-colors hover:text-white">
                   Home
                 </Link>
-                <Link href="/services">
+                <Link href="/services" className="transition-colors hover:text-white">
                   Services
                 </Link>
-                <Link href="/blog">
+                <Link href="/blog" className="transition-colors hover:text-white">
                   Insights
                 </Link>
-                <Link href="/about">
+                <Link href="/about" className="transition-colors hover:text-white">
                   About
                 </Link>
-                <Link href="/contact">
+                <Link href="/contact" className="transition-colors hover:text-white">
                   Contact
                 </Link>
               </div>
@@ -186,6 +192,11 @@ export default function App() {
       <Switch>
         <Route path="/">
           <main>
+            <PageSeo
+              title="Engineering the Future of Tech"
+              description="Relentiv partners with ambitious teams to build scalable web, app, game, and AI products with enterprise-grade engineering."
+              path="/"
+            />
             {/* Hero Section */}
             <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden min-h-[90vh] flex items-center">
               {/* Video Background */}
@@ -705,8 +716,19 @@ export default function App() {
           <ServicesPage onBook={() => setIsBookingModalOpen(true)} />
         </Route>
         <Route path="/about" component={AboutPage} />
+        <Route path="/blog/page/:page">
+          {(params) => <BlogListPage page={Number(params.page)} />}
+        </Route>
+        <Route path="/blog">
+          <BlogListPage page={1} />
+        </Route>
         <Route path="/privacy-policy" component={PrivacyPolicyPage} />
+        <Route path="/terms" component={TermsPage} />
+        <Route path="/contact" component={ContactPage} />
         <Route path="/blog/:id" component={BlogPage} />
+        <Route>
+          <NotFoundPage />
+        </Route>
       </Switch>
 
       {/* Footer */}
@@ -735,17 +757,17 @@ export default function App() {
               <h2 className="mb-6 font-bold">Explore</h2>
               <ul className="space-y-4 text-sm text-gray-400">
                 <li>
-                  <Link href="/services">
+                  <Link href="/services" className="hover:text-accent-green">
                     Services
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog">
+                  <Link href="/blog" className="hover:text-accent-green">
                     Blog
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about">
+                  <Link href="/about" className="hover:text-accent-green">
                     About
                   </Link>
                 </li>
@@ -765,7 +787,7 @@ export default function App() {
                   </a>
                 </li>
                 <li>
-                  <Link href="/contact">
+                  <Link href="/contact" className="hover:text-accent-green">
                     Contact
                   </Link>
                 </li>
@@ -776,10 +798,10 @@ export default function App() {
             <p>© 2026 Relentiv. All rights reserved.</p>
             <div className="flex gap-8">
               <Link href="/privacy-policy">
-                Privacy Policy
+                <span className="hover:text-white">Privacy Policy</span>
               </Link>
               <Link href="/terms">
-                Terms of Service
+                <span className="hover:text-white">Terms of Service</span>
               </Link>
             </div>
           </div>

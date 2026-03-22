@@ -1,2 +1,3 @@
 export const isPrerender =
-  typeof navigator !== 'undefined' && /ReactSnap/i.test(navigator.userAgent);
+  typeof window === 'undefined' ||
+  (typeof navigator !== 'undefined' && /ReactSnap/i.test(navigator.userAgent));

@@ -1,4 +1,4 @@
-import {Helmet} from 'react-helmet-async';
+import {Helmet} from '../lib/helmet';
 
 const BASE_URL = 'https://relentiv.com';
 const SITE_NAME = 'Relentiv';

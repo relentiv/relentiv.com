@@ -1,8 +1,8 @@
 import {StrictMode} from 'react';
 import {createRoot, hydrateRoot} from 'react-dom/client';
-import {HelmetProvider} from 'react-helmet-async';
 import App from './App.tsx';
 import './index.css';
+import {HelmetProvider} from './lib/helmet';
 import {blogSlugs} from './sitemap-routes.js';
 import {pingIndexNow} from './utils/indexNow.js';
 import {isPrerender} from './utils/prerender';

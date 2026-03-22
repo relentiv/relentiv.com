@@ -1,10 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import * as GsapModule from "gsap";
+import * as ScrollTriggerModule from "gsap/ScrollTrigger";
 import PageSeo from "../components/PageSeo";
 import { isPrerender } from "../utils/prerender";
 
-gsap.registerPlugin(ScrollTrigger);
+const gsap = (
+  GsapModule as unknown as {
+    default: { gsap: typeof import("gsap").gsap };
+  }
+).default.gsap;
+const ScrollTrigger = (
+  ScrollTriggerModule as unknown as {
+    default: { ScrollTrigger: typeof import("gsap/ScrollTrigger").ScrollTrigger };
+  }
+).default.ScrollTrigger;
+
+if (gsap?.registerPlugin && ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const techStack = [
   {

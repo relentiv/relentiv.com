@@ -8,13 +8,13 @@ declare global {
   }
 }
 
-const GA_ID = import.meta.env.VITE_GA4_ID;
+const GA_ID = import.meta.env?.VITE_GA4_ID;
 
 export default function AnalyticsTracker() {
   const [location] = useLocation();
 
   useEffect(() => {
-    if (!import.meta.env.PROD || !GA_ID) {
+    if (!import.meta.env?.PROD || !GA_ID) {
       return;
     }
 
