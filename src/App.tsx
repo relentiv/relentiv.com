@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, useLocation, Link } from "wouter";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 import BookingModal from "./components/BookingModal";
@@ -20,21 +20,16 @@ import TermsPage from "./pages/TermsPage";
 import HowWeWork from "./components/HowWeWork";
 import PageTransition from "./components/PageTransition";
 import { isPrerender } from "./utils/prerender";
-const Login = lazy(() => import("./pages/admin/Login"));
-const LeadsDashboard = lazy(() => import("./pages/admin/LeadsDashboard"));
-const LeadDetail = lazy(() => import("./pages/admin/LeadDetail"));
-const ProtectedRoute = lazy(() => import("./components/admin/ProtectedRoute"));
+import Login from "./pages/admin/Login";
+import LeadsDashboard from "./pages/admin/LeadsDashboard";
+import LeadDetail from "./pages/admin/LeadDetail";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 // --- PAGE TRANSITION SETTINGS ---
 // Set to false to disable transitions entirely
 const ENABLE_PAGE_TRANSITIONS = true;
 const PAGE_TRANSITION_DURATION_SECONDS = 2.0;
 const PAGE_TRANSITION_HOLD_SECONDS = 0.2;
-const ADMIN_ROUTE_FALLBACK = (
-  <div className="min-h-screen bg-[#050505] flex items-center justify-center">
-    <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-  </div>
-);
 
 export default function App() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -204,24 +199,16 @@ export default function App() {
       ) : null}
 
       <Switch>
-        <Route path="/internal/portal/login">
-          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
-            <Login />
-          </Suspense>
-        </Route>
+        <Route path="/internal/portal/login" component={Login} />
         <Route path="/internal/portal/leads/:id">
-          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
-            <ProtectedRoute>
-              <LeadDetail />
-            </ProtectedRoute>
-          </Suspense>
+          <ProtectedRoute>
+            <LeadDetail />
+          </ProtectedRoute>
         </Route>
         <Route path="/internal/portal/leads">
-          <Suspense fallback={ADMIN_ROUTE_FALLBACK}>
-            <ProtectedRoute>
-              <LeadsDashboard />
-            </ProtectedRoute>
-          </Suspense>
+          <ProtectedRoute>
+            <LeadsDashboard />
+          </ProtectedRoute>
         </Route>
         <Route path="/">
           <main>
