@@ -1,21 +1,26 @@
 import React, { useEffect, useRef } from "react";
-import * as GsapModule from "gsap";
-import * as ScrollTriggerModule from "gsap/ScrollTrigger";
+import gsapModule from "gsap";
+import ScrollTriggerModule from "gsap/ScrollTrigger";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import PageSeo from "../components/PageSeo";
 import { services } from "../data/services";
 import { isPrerender } from "../utils/prerender";
 
-const gsap = (
-  GsapModule as unknown as {
-    default: { gsap: typeof import("gsap").gsap };
-  }
-).default.gsap;
-const ScrollTrigger = (
-  ScrollTriggerModule as unknown as {
-    default: { ScrollTrigger: typeof import("gsap/ScrollTrigger").ScrollTrigger };
-  }
-).default.ScrollTrigger;
+const gsapCandidate = gsapModule as unknown as typeof import("gsap").gsap & {
+  gsap?: typeof import("gsap").gsap;
+};
+const gsap = typeof gsapCandidate.registerPlugin === "function" ? gsapCandidate : gsapCandidate.gsap;
+const scrollTriggerCandidate = ScrollTriggerModule as unknown as {
+  default?: typeof import("gsap/ScrollTrigger").ScrollTrigger | {
+    ScrollTrigger?: typeof import("gsap/ScrollTrigger").ScrollTrigger;
+  };
+  ScrollTrigger?: typeof import("gsap/ScrollTrigger").ScrollTrigger;
+};
+const ScrollTrigger =
+  scrollTriggerCandidate.ScrollTrigger ??
+  (typeof scrollTriggerCandidate.default === "function"
+    ? scrollTriggerCandidate.default
+    : scrollTriggerCandidate.default?.ScrollTrigger);
 
 if (gsap?.registerPlugin && ScrollTrigger) {
   gsap.registerPlugin(ScrollTrigger);

@@ -1,5 +1,6 @@
 import {StrictMode} from 'react';
 import {createRoot, hydrateRoot} from 'react-dom/client';
+import {Router} from 'wouter';
 import App from './App.tsx';
 import './index.css';
 import {HelmetProvider} from './lib/helmet';
@@ -16,7 +17,9 @@ if (!rootElement) {
 const app = (
   <StrictMode>
     <HelmetProvider>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </HelmetProvider>
   </StrictMode>
 );

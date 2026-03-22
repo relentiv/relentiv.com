@@ -29,11 +29,6 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
-    const assetResponse = await fetchAsset(env, request);
-    if (assetResponse) {
-      return addHeaders(assetResponse, pathname);
-    }
-
     if (!pathname.includes('.')) {
       const normalizedPath = pathname === '/' ? '' : pathname.replace(/\/$/, '');
       const htmlRequest = new Request(`${url.origin}${normalizedPath}/index.html`, request);
@@ -42,6 +37,11 @@ export default {
       if (htmlResponse) {
         return addHeaders(htmlResponse, `${normalizedPath || '/'}/index.html`);
       }
+    }
+
+    const assetResponse = await fetchAsset(env, request);
+    if (assetResponse) {
+      return addHeaders(assetResponse, pathname);
     }
 
     const indexRequest = new Request(`${url.origin}/index.html`, request);
