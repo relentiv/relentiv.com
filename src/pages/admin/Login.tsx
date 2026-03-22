@@ -32,7 +32,7 @@ export default function Login() {
         setError("Incorrect access code");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError(err instanceof Error ? err.message : "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
