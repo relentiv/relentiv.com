@@ -49,6 +49,7 @@ export default function App() {
   return (
     <div className="antialiased font-sans">
       {/* Page Transition Overlay */}
+      {/* trigger */}
       <PageTransition 
         enabled={ENABLE_PAGE_TRANSITIONS && !isPrerender} 
         duration={PAGE_TRANSITION_DURATION_SECONDS}
