@@ -19,5 +19,4 @@ This contains everything you need to run your app locally.
 ## Production tasks
 
 1. Set `VITE_GA4_ID` before enabling analytics in production
-2. Replace the Formspree placeholder with the live contact endpoint
-3. After deployment, submit `https://relentiv.com/sitemap.xml` to Google Search Console
+2. After deployment, submit `https://relentiv.com/sitemap.xml` to Google Search Console

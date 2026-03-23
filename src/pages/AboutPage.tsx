@@ -187,7 +187,7 @@ export default function AboutPage() {
                 We are a collective of designers, engineers, and strategists dedicated to pushing the boundaries of digital experiences. Founded on the principle that technology should feel intuitive and look beautiful, we partner with visionary brands to build the future.
               </p>
               <p className="text-lg font-light leading-relaxed text-gray-500 md:text-xl">
-                Our approach is minimal, deliberate, and uncompromising. We strip away the unnecessary to reveal the core value of your product, ensuring every interaction is meaningful and every pixel serves a purpose. Welcome to the new standard of digital craftsmanship.
+                Our approach is minimal, deliberate, and practical. We strip away what does not help the product, focus on the parts users actually depend on, and build interfaces that are clear enough to ship and maintain with confidence.
               </p>
             </div>
           </section>

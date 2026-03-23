@@ -231,7 +231,7 @@ export default function HomePage({onBook}: HomePageProps) {
                   <div className="my-8">
                     <div className="flex items-start gap-2">
                       <p className="text-7xl font-light tracking-tighter text-white">
-                        300<span className="text-5xl">%</span>
+                        38<span className="text-5xl">%</span>
                       </p>
                       <svg className="mt-2 h-6 w-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 19l16-16m0 0v10m0-10H10"></path>

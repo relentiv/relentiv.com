@@ -252,9 +252,9 @@ export default function App() {
                     </span>
                   </h1>
                   <p className="text-lg lg:text-xl text-gray-200 font-medium mb-12 max-w-2xl leading-relaxed">
-                    We empower enterprises with cutting-edge Web, App, and Game
-                    development. Our consultancy bridges the gap between
-                    visionary ideas and scalable digital reality.
+                    We build web, app, game, and AI products for teams that need
+                    clear execution, strong engineering, and delivery that holds
+                    up after launch.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-20">
                     <button 
@@ -516,7 +516,7 @@ export default function App() {
                       <div className="my-8">
                         <div className="flex items-start gap-2">
                           <h4 className="text-7xl font-light text-white tracking-tighter">
-                            300<span className="text-5xl">%</span>
+                            38<span className="text-5xl">%</span>
                           </h4>
                           <svg
                             className="w-6 h-6 text-white/50 mt-2"
@@ -537,12 +537,10 @@ export default function App() {
                       {/* Bottom Content */}
                       <div>
                         <h5 className="text-lg font-medium text-white mb-2">
-                          Increase in user retention
+                          Why We Rebuilt Unison's UI — And What a 38% Retention Lift Actually Looks Like
                         </h5>
                         <p className="text-sm text-white/60 leading-relaxed mb-6">
-                          Redesigned the core banking flow for a leading
-                          European fintech, resulting in unprecedented
-                          engagement.
+                        Stat callout: 38% increase in 7-day active retention
                         </p>
                         <div className="flex gap-2">
                           <div className="w-16 h-10 rounded-full bg-white/10 overflow-hidden border border-white/10">
@@ -636,7 +634,7 @@ export default function App() {
                     <div className="relative z-10 p-8 flex flex-col h-full">
                       <div className="flex items-center justify-between mb-auto">
                         <span className="text-sm text-white/60 font-medium">
-                          Client Story
+                        Engineering for West
                         </span>
                         <div className="flex gap-1">
                           {[...Array(5)].map((_, i) => (
@@ -661,10 +659,9 @@ export default function App() {
                           <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"></path>
                         </svg>
                         <p className="text-xl font-medium text-white leading-snug mb-8">
-                          "Relentiv completely re-engineered our approach to
-                          digital product design."
+                          "Your Healthcare Website Has a Legal Deadline — Most Teams Don't Know It Yet aka ADA                         "
                         </p>
-                        <div className="flex items-center gap-4">
+                        {/* <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full bg-white/10 overflow-hidden">
                             <img
                               src="https://picsum.photos/seed/ceo/100/100"
@@ -680,7 +677,7 @@ export default function App() {
                               CTO, Nexus Logistics
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -773,7 +770,7 @@ export default function App() {
                     Global technology leaders driving growth through innovation, strategy, and engineering excellence.
                   </p>
                   <address className="sr-only not-italic">
-                    100 Innovation Drive, Suite 400, San Francisco, CA 94105. contact@relentiv.com. +1 (415) 555-0198.
+                    Kudlu Gate, Bengaluru, Karnataka
                   </address>
                 </div>
                 <div>
