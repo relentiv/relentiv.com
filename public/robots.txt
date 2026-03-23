@@ -2,8 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
-<<<<<<< Updated upstream
-=======
 
 User-agent: Googlebot
 Allow: /
@@ -28,6 +26,4 @@ Allow: /
 
 User-agent: Applebot
 Allow: /
-
->>>>>>> Stashed changes
 Sitemap: https://relentiv.com/sitemap.xml

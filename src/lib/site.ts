@@ -4,8 +4,7 @@ export const DEFAULT_TITLE = 'Relentiv | IT Services & Digital Solutions';
 export const DEFAULT_DESCRIPTION =
   'Relentiv delivers web, mobile, AI, and product engineering services for companies that need reliable digital execution.';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-export const CONTACT_EMAIL = 'contact@relentiv.com';
-export const CONTACT_PHONE = '+1 (415) 555-0198';
+export const CONTACT_EMAIL = 'hello@relentiv.com';
 
 export interface BreadcrumbItem {
   name: string;

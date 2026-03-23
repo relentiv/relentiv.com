@@ -83,15 +83,15 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
       const params = new URLSearchParams({
         action: 'TEMPLATE',
-        text: `Discovery Call: ${formData.company || formData.name} x INDI AINTELLIGENCE`,
+        text: `Discovery Call: ${formData.company || formData.name} x Relentiv`,
         dates: `${formatDt(start)}/${formatDt(end)}`,
         details: `Project Details:\n${formData.description}\n\nBudget: ${formData.budget}\nTimeline: ${formData.timeline}\nClient: ${formData.name} (${formData.email})`,
-        add: 'shavitriverma111@gmail.com',
+        add: 'hello@relentiv.com',
       });
 
       return `https://calendar.google.com/calendar/render?${params.toString()}`;
     } catch (error) {
-      return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Discovery+Call+x+INDI+AINTELLIGENCE&add=shavitriverma111@gmail.com';
+      return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Discovery+Call+x+Relentiv&add=hello@relentiv.com';
     }
   };
 
