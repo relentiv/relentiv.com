@@ -7,7 +7,7 @@ import { Route, Switch, useLocation, Link } from "wouter";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 import BookingModal from "./components/BookingModal";
 import CookieConsent from "./components/CookieConsent";
-import PageSeo from "./components/PageSeo";
+import Seo from "./components/Seo";
 import ScrollRestoration from "./components/ScrollRestoration";
 import BlogListPage from "./pages/BlogListPage";
 import BlogPage from "./pages/BlogPage";
@@ -45,6 +45,46 @@ export default function App() {
   }, [isMobileMenuOpen]);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const homeSchemas = [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://relentiv.com/#organization",
+          name: "Relentiv",
+          url: "https://relentiv.com",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://relentiv.com/logo.png",
+          },
+          description:
+            "Relentiv is a technology company specializing in web, mobile, AI, and product engineering services.",
+          sameAs: [
+            "https://linkedin.com/company/relentiv",
+            "https://twitter.com/relentiv",
+          ],
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://relentiv.com/#website",
+          url: "https://relentiv.com",
+          name: "Relentiv",
+          publisher: {
+            "@id": "https://relentiv.com/#organization",
+          },
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: "https://relentiv.com/?q={search_term_string}",
+            },
+            "query-input": "required name=search_term_string",
+          },
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="antialiased font-sans">
@@ -213,10 +253,11 @@ export default function App() {
         </Route>
         <Route path="/">
           <main>
-            <PageSeo
-              title="Engineering the Future of Tech"
+            <Seo
+              title="Relentiv — Engineering the Future of Tech"
               description="Relentiv partners with ambitious teams to build scalable web, app, game, and AI products with enterprise-grade engineering."
               path="/"
+              schemas={homeSchemas}
             />
             {/* Hero Section */}
             <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden min-h-[90vh] flex items-center">
@@ -246,7 +287,7 @@ export default function App() {
                     Next-Gen Digital Transformation
                   </div>
                   <h1 className="text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-8">
-                    Engineering the <br className="hidden md:block" />{" "}
+                    Relentiv — Engineering the <br className="hidden md:block" />{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-green to-emerald-200">
                       Future of Tech.
                     </span>

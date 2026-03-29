@@ -1,3 +1,13 @@
+const KNOWN_ROUTES = [
+  '/',
+  '/about',
+  '/services',
+  '/contact',
+  '/blog',
+  '/privacy-policy',
+  '/terms',
+];
+
 function addHeaders(response, pathname) {
   const headers = new Headers(response.headers);
 
@@ -28,14 +38,15 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const pathname = url.pathname;
+    const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
 
     if (!pathname.includes('.')) {
-      const normalizedPath = pathname === '/' ? '' : pathname.replace(/\/$/, '');
-      const htmlRequest = new Request(`${url.origin}${normalizedPath}/index.html`, request);
+      const routeBase = normalizedPath === '/' ? '' : normalizedPath;
+      const htmlRequest = new Request(`${url.origin}${routeBase}/index.html`, request);
       const htmlResponse = await fetchAsset(env, htmlRequest);
 
       if (htmlResponse) {
-        return addHeaders(htmlResponse, `${normalizedPath || '/'}/index.html`);
+        return addHeaders(htmlResponse, `${routeBase || '/'}/index.html`);
       }
     }
 
@@ -44,15 +55,32 @@ export default {
       return addHeaders(assetResponse, pathname);
     }
 
-    const indexRequest = new Request(`${url.origin}/index.html`, request);
-    const indexResponse = await fetchAsset(env, indexRequest);
-    if (indexResponse) {
-      const htmlResponse = new Response(indexResponse.body, {
-        status: 200,
-        headers: indexResponse.headers,
+    const isKnownRoute =
+      KNOWN_ROUTES.includes(normalizedPath) ||
+      (normalizedPath.startsWith('/blog/') && normalizedPath.length > '/blog/'.length);
+
+    if (isKnownRoute) {
+      const indexRequest = new Request(`${url.origin}/index.html`, request);
+      const indexResponse = await fetchAsset(env, indexRequest);
+      if (indexResponse) {
+        const htmlResponse = new Response(indexResponse.body, {
+          status: 200,
+          headers: indexResponse.headers,
+        });
+
+        return addHeaders(htmlResponse, '/index.html');
+      }
+    }
+
+    const notFoundRequest = new Request(`${url.origin}/404.html`, request);
+    const notFoundResponse = await fetchAsset(env, notFoundRequest);
+    if (notFoundResponse) {
+      const htmlResponse = new Response(notFoundResponse.body, {
+        status: 404,
+        headers: notFoundResponse.headers,
       });
 
-      return addHeaders(htmlResponse, '/index.html');
+      return addHeaders(htmlResponse, '/404.html');
     }
 
     return new Response('Not found', {status: 404});
