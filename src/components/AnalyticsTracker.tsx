@@ -5,16 +5,21 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
+    RELENTIV_GA4_ID?: string;
   }
 }
-
-const GA_ID = import.meta.env?.VITE_GA4_ID;
 
 export default function AnalyticsTracker() {
   const [location] = useLocation();
 
   useEffect(() => {
-    if (!import.meta.env?.PROD || !GA_ID) {
+    const gaId = window.RELENTIV_GA4_ID || import.meta.env?.VITE_GA4_ID;
+
+    if (!gaId || gaId.startsWith('%VITE_')) {
+      return;
+    }
+
+    if (!import.meta.env?.PROD) {
       return;
     }
 
@@ -26,7 +31,7 @@ export default function AnalyticsTracker() {
       return;
     }
 
-    window.gtag('config', GA_ID, {
+    window.gtag('config', gaId, {
       page_path: location,
       page_location: window.location.href,
     });
