@@ -261,7 +261,7 @@ export default function App() {
         <Route path="/">
           <main>
             <Seo
-              title="Relentiv — Engineering the Future of Tech"
+              title="Relentiv - Engineering the Future of Tech"
               description="Relentiv partners with ambitious teams to build scalable web, app, game, and AI products with enterprise-grade engineering."
               path="/"
               schemas={homeSchemas}
@@ -294,7 +294,7 @@ export default function App() {
                     Next-Gen Digital Transformation
                   </div>
                   <h1 className="text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-8">
-                    Relentiv — Engineering the <br className="hidden md:block" />{" "}
+                    Relentiv - Engineering the <br className="hidden md:block" />{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-green to-emerald-200">
                       Future of Tech.
                     </span>
