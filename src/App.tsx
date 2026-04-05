@@ -12,6 +12,7 @@ import ScrollRestoration from "./components/ScrollRestoration";
 import BlogListPage from "./pages/BlogListPage";
 import BlogPage from "./pages/BlogPage";
 import ContactPage from "./pages/ContactPage";
+import ClientPocPage from "./pages/ClientPocPage";
 import AboutPage from "./pages/AboutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
@@ -23,6 +24,7 @@ import { isPrerender } from "./utils/prerender";
 import Login from "./pages/admin/Login";
 import LeadsDashboard from "./pages/admin/LeadsDashboard";
 import LeadDetail from "./pages/admin/LeadDetail";
+import ContactMessagesDashboard from "./pages/admin/ContactMessagesDashboard";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 // --- PAGE TRANSITION SETTINGS ---
@@ -249,6 +251,11 @@ export default function App() {
         <Route path="/internal/portal/leads">
           <ProtectedRoute>
             <LeadsDashboard />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/internal/portal/messages">
+          <ProtectedRoute>
+            <ContactMessagesDashboard />
           </ProtectedRoute>
         </Route>
         <Route path="/">
@@ -784,6 +791,9 @@ export default function App() {
         <Route path="/privacy-policy" component={PrivacyPolicyPage} />
         <Route path="/terms" component={TermsPage} />
         <Route path="/contact" component={ContactPage} />
+        <Route path="/poc/:slug">
+          {(params) => <ClientPocPage slug={params.slug} onBook={() => setIsBookingModalOpen(true)} />}
+        </Route>
         <Route path="/blog/:id" component={BlogPage} />
         <Route>
           <NotFoundPage />

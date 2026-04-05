@@ -4,7 +4,7 @@ import {Router} from 'wouter';
 import App from './App.tsx';
 import './index.css';
 import {HelmetProvider} from './lib/helmet';
-import {blogSlugs} from './sitemap-routes.js';
+import {blogSlugs, pocPrerenderRoutes} from './sitemap-routes.js';
 import {pingIndexNow} from './utils/indexNow.js';
 import {isPrerender} from './utils/prerender';
 
@@ -38,6 +38,6 @@ if (import.meta.env.DEV && typeof window !== 'undefined') {
 
   if (!windowWithFlag[developmentPingFlag]) {
     windowWithFlag[developmentPingFlag] = true;
-    void pingIndexNow(blogSlugs);
+    void pingIndexNow([...blogSlugs, ...pocPrerenderRoutes]);
   }
 }

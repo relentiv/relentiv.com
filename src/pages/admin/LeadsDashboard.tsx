@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db, auth } from '../../lib/firebase/config';
 import { Lead, updateLeadStatus } from '../../lib/firebase/leads';
@@ -115,6 +115,14 @@ export default function LeadsDashboard() {
       <header className="border-b border-white/10 bg-[#0a0a0a] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold tracking-tight">RELENTIV <span className="text-emerald-500">PORTAL</span></h1>
+          <nav className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1">
+            <Link href="/internal/portal/leads" className="rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-400">
+              Leads
+            </Link>
+            <Link href="/internal/portal/messages" className="rounded-full px-4 py-2 text-sm font-medium text-gray-400 transition-colors hover:text-white">
+              Messages
+            </Link>
+          </nav>
         </div>
         <div className="flex items-center gap-6">
           <span className="text-sm text-gray-400">{auth.currentUser?.email}</span>
