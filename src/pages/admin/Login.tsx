@@ -13,7 +13,7 @@ export default function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((user) => {
       if (user) {
-        setLocation('/internal/portal/leads');
+        setLocation('/internal/portal/messages');
       }
     });
     return () => unsubscribe();
@@ -44,7 +44,7 @@ export default function Login() {
     
     try {
       await signInWithGoogle();
-      setLocation('/internal/portal/leads');
+      setLocation('/internal/portal/messages');
     } catch (err: any) {
       setError(err.message || "Failed to sign in with Google");
     } finally {

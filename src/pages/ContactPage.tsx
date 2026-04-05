@@ -1,13 +1,68 @@
-import {useId} from 'react';
+import {useId, useState} from 'react';
+import type {ChangeEvent, FormEvent} from 'react';
 import Seo from '../components/Seo';
 import {buildBreadcrumbSchema} from '../lib/site';
-
-const CONTACT_ENDPOINT = import.meta.env?.VITE_CONTACT_FORM_ENDPOINT;
 
 export default function ContactPage() {
   const nameId = useId();
   const emailId = useId();
   const messageId = useId();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name, value} = event.target;
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(null);
+
+    try {
+      const firebaseContact = await import('../lib/firebase/contact');
+
+      await firebaseContact.submitContactSubmission({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      });
+
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
+      });
+      setSubmitSuccess('Your message has been sent. We will review it and get back to you soon.');
+    } catch (error) {
+      console.error('Failed to submit contact request:', error);
+      const {getContactSubmissionErrorMessage} = await import('../lib/firebase/contact');
+      setSubmitError(getContactSubmissionErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const isFormValid =
+    formData.name.trim() !== '' &&
+    formData.email.trim() !== '' &&
+    formData.message.trim() !== '';
 
   return (
     <>
@@ -33,7 +88,7 @@ export default function ContactPage() {
           </header>
 
           <section aria-labelledby="contact-form-title" className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-            <form action={CONTACT_ENDPOINT} method="POST" className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+            <form onSubmit={handleSubmit} className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
               <h2 id="contact-form-title" className="mb-8 text-3xl font-medium text-white">
                 Contact form
               </h2>
@@ -47,6 +102,9 @@ export default function ContactPage() {
                     name="name"
                     type="text"
                     required
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     className="w-full rounded-2xl border border-white/10 bg-[#0a0a0a] px-5 py-4 text-white outline-none transition-colors focus:border-emerald-500/50"
                   />
                 </div>
@@ -59,6 +117,9 @@ export default function ContactPage() {
                     name="email"
                     type="email"
                     required
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     className="w-full rounded-2xl border border-white/10 bg-[#0a0a0a] px-5 py-4 text-white outline-none transition-colors focus:border-emerald-500/50"
                   />
                 </div>
@@ -71,14 +132,28 @@ export default function ContactPage() {
                     name="message"
                     required
                     rows={6}
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     className="w-full rounded-2xl border border-white/10 bg-[#0a0a0a] px-5 py-4 text-white outline-none transition-colors focus:border-emerald-500/50"
                   ></textarea>
                 </div>
+                {submitError ? (
+                  <p role="alert" className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                    {submitError}
+                  </p>
+                ) : null}
+                {submitSuccess ? (
+                  <p role="status" className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+                    {submitSuccess}
+                  </p>
+                ) : null}
                 <button
                   type="submit"
-                  className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-gray-200"
+                  disabled={isSubmitting || !isFormValid}
+                  className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Send inquiry
+                  {isSubmitting ? 'Sending...' : 'Send inquiry'}
                 </button>
               </div>
             </form>

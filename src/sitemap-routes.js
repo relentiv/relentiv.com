@@ -1,3 +1,5 @@
+import {clientPocs} from './data/clientPocs.ts';
+
 export const staticRoutes = [
   {url: '/', priority: '1.0', changefreq: 'monthly'},
   {url: '/services', priority: '0.9', changefreq: 'monthly'},
@@ -20,11 +22,20 @@ export const blogSlugs = [
 // These routes need direct-link support in production, but should stay out of the public sitemap.
 export const adminPrerenderRoutes = ['/internal/portal/login', '/internal/portal/leads'];
 
+export const pocRoutes = clientPocs.map((entry) => ({
+  url: `/poc/${entry.slug}`,
+  priority: '0.7',
+  changefreq: 'monthly',
+}));
+
+export const pocPrerenderRoutes = pocRoutes.map((route) => route.url);
+
 export const prerenderRoutes = [
   ...staticRoutes.map((route) => route.url),
   ...blogPaginationRoutes,
   ...blogSlugs,
   ...adminPrerenderRoutes,
+  ...pocPrerenderRoutes,
 ];
 
 export const specialPrerenderRoutes = [
