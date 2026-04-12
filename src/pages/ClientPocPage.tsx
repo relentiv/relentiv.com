@@ -175,8 +175,11 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
     }
   };
 
-  const firstImage = poc.images[0];
-  const selectedGalleryImage = poc.images[selectedIndex] || poc.images[0];
+  const deliverables = poc.deliverables ?? poc.highlights ?? [];
+  const processNotes = poc.processNotes ?? [];
+  const images = poc.images ?? [];
+  const firstImage = images[0];
+  const selectedGalleryImage = images[selectedIndex] ?? images[0] ?? null;
 
   return (
     <>
@@ -259,7 +262,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
 
               {/* Directly showing the deliverables/value prop in the hero so they don't have to scroll */}
               <motion.div variants={slideUp} className="hidden lg:flex flex-col gap-4 mb-12">
-                {poc.deliverables.slice(0, 4).map((item, i) => (
+                {deliverables.slice(0, 4).map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                     <span className="text-gray-200 text-base">{item}</span>
@@ -328,7 +331,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
                )}
 
                {/* Stats / Process Float Note */}
-               {poc.processNotes[0] && (
+               {processNotes[0] && (
                  <motion.div 
                    initial={{ opacity: 0, y: 30 }}
                    animate={{ opacity: 1, y: 0 }}
@@ -340,7 +343,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
                        <span className="text-xs uppercase tracking-widest text-gray-400 font-medium">Design Process</span>
                     </div>
                     <p className="text-sm text-gray-200 leading-relaxed">
-                      {poc.processNotes[0]}
+                      {processNotes[0]}
                     </p>
                  </motion.div>
                )}
@@ -379,7 +382,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
 
           <div className="pl-6 lg:pl-12 overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
             <div className="flex">
-               {poc.images.map((image, index) => (
+               {images.map((image, index) => (
                  <div key={image.src + index} className="min-w-0 flex-[0_0_85%] md:flex-[0_0_65%] lg:flex-[0_0_55%] pr-6 md:pr-8">
                    <div 
                      className="group relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/10 bg-[#111] cursor-pointer"
@@ -413,7 +416,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
 
           <div className="mx-auto w-full max-w-[90rem] px-6 lg:px-12 mt-10">
             <div className="flex flex-wrap gap-2">
-               {poc.images.map((image, index) => (
+               {images.map((image, index) => (
                  <button
                    key={index}
                    onClick={() => emblaApi?.scrollTo(index)}
@@ -534,7 +537,7 @@ export default function ClientPocPage({ slug, onBook }: ClientPocPageProps) {
 
       {/* FULL SCREEN LIGHTBOX */}
       <AnimatePresence>
-        {isLightboxOpen && (
+        {isLightboxOpen && selectedGalleryImage && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
